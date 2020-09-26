@@ -18,8 +18,7 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
-        // %%%%% Need to add animated Character
-        // _animator = GetComponent<Animator>();
+        this._animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -57,8 +56,7 @@ public class PlayerController : MonoBehaviour
         // move the character in the direction they are facing in worldspace
         transform.Translate(transform.forward * _currentSpeed * Time.deltaTime, Space.World);
 
-        // %%%%% Need to add animated Character
-        // float animationSpeedPercent = ((running) ? 1f : .5f) * inputDirection.magnitude;
-        // _animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
+        float animationSpeedPercent = ((running) ? 1f : .5f) * inputDirection.magnitude;
+        _animator.SetFloat("speedPercent", animationSpeedPercent, speedSmoothTime, Time.deltaTime);
     }
 }
