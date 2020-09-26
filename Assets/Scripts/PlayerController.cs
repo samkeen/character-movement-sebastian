@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Inspired by Sebastian's youtube series:
+/// https://www.youtube.com/watch?v=sNmeK3qK7oA&list=PLFt_AvWsXl0djuNM22htmz3BUtHHtOh7v&index=8
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float walkSpeed = 2;
@@ -16,9 +20,13 @@ public class PlayerController : MonoBehaviour
     private float _speedSmoothVelocity;
     private float _currentSpeed;
 
+    private Transform _cameraTransform;
+
     private void Start()
     {
         this._animator = GetComponent<Animator>();
+        // need the camera transform in order to move in direction of camera
+        this._cameraTransform = Camera.main.transform;
     }
 
     void Update()
@@ -38,7 +46,11 @@ public class PlayerController : MonoBehaviour
         // ------------------------------------------------------------------ y is actually z here
         if (inputDirection != Vector2.zero)
         {
-            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) * Mathf.Rad2Deg;
+            // adding 
+            float targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.y) 
+                                   * Mathf.Rad2Deg 
+                                   // this causes the play's forward movement to be that of the camera
+                                   + this._cameraTransform.eulerAngles.y;
             transform.eulerAngles = Vector3.up * Mathf.SmoothDampAngle(
                 transform.eulerAngles.y, // current angle
                 targetRotation, // target angle
